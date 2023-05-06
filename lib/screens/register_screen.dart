@@ -1,7 +1,6 @@
 import 'package:ecommerce_app_sat26/components/input_text.dart';
 import 'package:ecommerce_app_sat26/screens/home_screen.dart';
 import 'package:ecommerce_app_sat26/screens/login_screen.dart';
-import 'package:ecommerce_app_sat26/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -169,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainScreen()),
+                                    builder: (context) => HomeScreen()),
                                 (route) => false);
                           }
                         },

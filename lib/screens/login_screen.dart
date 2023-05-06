@@ -2,7 +2,6 @@ import 'package:ecommerce_app_sat26/screens/home_screen.dart';
 import 'package:ecommerce_app_sat26/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
-
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
   @override
@@ -35,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 16,
                     ),
-                    // Text Welcome
+                    // Welcome Text
                     Text(
                       'Welcome to Lafyuu',
                       style: TextStyle(
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 8,
                     ),
-                    // Text Sign In
+                    // Sign In Text
                     Text(
                       'Sign in to continue',
                       style: TextStyle(
@@ -58,9 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    // Text Box Email
+                    // Email Box
                     _email_box(context),
-                    // Text Box Password
+                    // Password Box
                     Container(
                       margin: EdgeInsets.fromLTRB(25, 8, 25, 0),
                       child: TextFormField(
@@ -96,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             onPressed: () {
                               setState(
-                                    () {
+                                () {
                                   // version 1
                                   if (isPasswordObscure) {
                                     isPasswordObscure = false;
@@ -131,10 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return HomeScreen();
-                            }));
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                                (route) => false);
                           }
                         },
                         child: Text(
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RegisterScreen() ), (route) => false);
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterScreen()));
                             },
                             child: Text(
                               'Register',
@@ -282,7 +282,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-Widget _email_box(context){
+
+Widget _email_box(context) {
   return Container(
     margin: EdgeInsets.fromLTRB(25, 28, 25, 0),
     child: TextFormField(
@@ -311,8 +312,7 @@ Widget _email_box(context){
       validator: (String? text) {
         if (text!.isEmpty) {
           return 'Your Email cannot be empty!';
-        } else if (!text.contains('@') ||
-            !text.contains('.')) {
+        } else if (!text.contains('@') || !text.contains('.')) {
           return 'Your email is incorrect!';
         } else {
           return null;

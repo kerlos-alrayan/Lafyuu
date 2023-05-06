@@ -4,7 +4,7 @@ class Category extends StatelessWidget {
   const Category({Key? key,}) : super(key: key);
   final List items = const [
     {
-      Icon: Icon(Icons.production_quantity_limits, color: Color(0xff40BFFF),),
+      Icon: Icon(Icons.add_a_photo_outlined, color: Color(0xff40BFFF),),
       'text': 'Man Shirt',
     },
     {
@@ -24,12 +24,11 @@ class Category extends StatelessWidget {
       'text': 'Man Shoes',
     }
   ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 150,
+      height: 140,
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: 5,

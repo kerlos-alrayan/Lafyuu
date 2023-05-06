@@ -1,7 +1,7 @@
-import 'package:ecommerce_app_sat26/components/category.dart';
-import 'package:ecommerce_app_sat26/screens/account_screen.dart';
-import 'package:ecommerce_app_sat26/screens/explore_screen.dart';
-import 'package:ecommerce_app_sat26/screens/offer_screen.dart';
+import 'package:ecommerce_app_sat26/components/gridview_builder.dart';
+import 'package:ecommerce_app_sat26/components/text_more.dart';
+import 'package:ecommerce_app_sat26/model/category_repo_model.dart';
+import 'package:ecommerce_app_sat26/repository/category_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -16,19 +16,26 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
+          // Main
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Search & Favorite
               Container(
-                margin: EdgeInsets.only(left: 16, top: 16,),
+                margin: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     // Search
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.65,
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.search,
@@ -56,30 +63,34 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                     // Favorite
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite_border_outlined,
-                        color: Colors.grey,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/images/main_screen/Vector_main.png',
+                        width: 22,
+                        height: 22,
                       ),
                     ),
                     // Notification
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.notifications_none_outlined,
-                        color: Colors.grey,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/images/main_screen/Group.png',
+                        width: 22,
+                        height: 22,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
+              // Line
               Container(
                 margin: EdgeInsets.only(top: 16, bottom: 16),
                 width: MediaQuery.of(context).size.width,
                 height: 0.5,
                 color: Color(0xffEBF0FF),
               ),
+              // CarouselSlider
               Container(
                 // margin: EdgeInsets.only(left: 16, right: 16),
                 child: CarouselSlider.builder(
@@ -90,81 +101,125 @@ class _MainScreenState extends State<MainScreen> {
                     autoPlayInterval: Duration(seconds: 5),
                     enableInfiniteScroll: true,
                   ),
-                  itemBuilder:
-                      (BuildContext context, int itemIndex, int pageViewIndex) =>
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
                       Container(
-                        margin: EdgeInsets.only(left: 16, right: 16),
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                              'assets/images/Promotion Image.png',
-                              fit: BoxFit.cover,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(24, 18, 50, 70),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Super Flash Sale',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    '50% off',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                    margin: EdgeInsets.only(left: 16, right: 16),
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/images/Promotion Image.png',
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Category',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: GestureDetector(
-                        onTap: (){},
-                        child: Text(
-                          'More Category',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Poppins',
-                            fontSize: 16,
-                            color: Color(0xff40BFFF),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 18, 50, 70),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Super Flash Sale',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                '50% off',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-              Category(),
+              // Category & More Category
+              TextAndMore(
+                text: 'Category',
+                more: 'More Category',
+              ),
+              // Categories
+              Center(
+                child: FutureBuilder<List<CategoryRepoModel>>(
+                  future: CategoryRepository().getAllCategories(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<CategoryRepoModel>> snapshot) {
+                    final listOfCategories = snapshot.data;
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 140,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: listOfCategories!.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(top: 12, left: 12),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 16),
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            listOfCategories[index].image),
+                                        radius: 30,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.19,
+                                      child: Text(
+                                        listOfCategories[index].name,
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.027,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.grey),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                    return Container(
+                      child: Text('Hello World'),
+                    );
+                  },
+                ),
+              ),
+              // Flash Sale
+              TextAndMore(
+                text: 'Flash Sale',
+                more: 'See More',
+              ),
+              // GridView Builder
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                child: GridViewBuilder(),
+              ),
             ],
           ),
         ),

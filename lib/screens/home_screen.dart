@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: screenIndex,
         onTap: (int index){
          setState(() {
-           screenIndex = index;
+           screenIndex = index; //[0, 1, 2, 3, 4]
          });
         },
         type: BottomNavigationBarType.fixed, // lw akter mn 2 icons
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: _screen[screenIndex],
+      body: _screen[screenIndex], //[0, 1, 2, 3, 4]
     );
   }
 }
