@@ -12,7 +12,7 @@ class CategoryRepository {
           id: value['id'],
           name: value['name'],
           image: value['image'],
-        ),
+         ),
       ),
     );
     return listOfCategories;

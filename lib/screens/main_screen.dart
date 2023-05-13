@@ -2,6 +2,7 @@ import 'package:ecommerce_app_sat26/components/gridview_builder.dart';
 import 'package:ecommerce_app_sat26/components/text_more.dart';
 import 'package:ecommerce_app_sat26/model/category_repo_model.dart';
 import 'package:ecommerce_app_sat26/repository/category_repo.dart';
+import 'package:ecommerce_app_sat26/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -151,62 +152,80 @@ class _MainScreenState extends State<MainScreen> {
               Center(
                 child: FutureBuilder<List<CategoryRepoModel>>(
                   future: CategoryRepository().getAllCategories(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<CategoryRepoModel>> snapshot) {
-                    final listOfCategories = snapshot.data;
+                  builder: (context, snapshot) {
+                    final response = snapshot.data;
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 140,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: listOfCategories!.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(top: 12, left: 12),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            listOfCategories[index].image),
-                                        radius: 30,
-                                      ),
+                      if (snapshot.data == null) {
+                        return Text('This is no data!');
+                      }
+                      if (response != null) {
+                        final listOfCategories = response;
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 140,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: listOfCategories.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CategoryScreen(
+                                                  title: listOfCategories[index].name,
+                                                  imageURL:
+                                                      listOfCategories[index].image,
+                                                )));
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 12, left: 12),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 16),
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                listOfCategories[index].image),
+                                            radius: 30,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.19,
+                                          child: Text(
+                                            listOfCategories[index].name,
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.027,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.grey),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.19,
-                                      child: Text(
-                                        listOfCategories[index].name,
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.027,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.grey),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
-                      );
+                                  ),
+                                );
+                              }),
+                        );
+                      }
                     }
-                    return Container(
-                      child: Text('Hello World'),
-                    );
+                    return Container();
                   },
                 ),
               ),
