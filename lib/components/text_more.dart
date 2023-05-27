@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
 class TextAndMore extends StatelessWidget {
-  const TextAndMore({Key? key, this.text, this.more}) : super(key: key);
-  final String? text;
-  final String? more;
+  const TextAndMore({
+    Key? key,
+    required this.text,
+    required this.more,
+    required this.onTap,
+  }) : super(key: key);
+  final String text;
+  final String more;
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +28,7 @@ class TextAndMore extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-            onTap: (){},
+            onTap: onTap,
             child: Text(
               '$more',
               style: TextStyle(

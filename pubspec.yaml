@@ -37,10 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.2.1
   dio: ^5.1.1
+  flutter_rating_bar: ^4.0.1
+  flutter_native_splash: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+#flutter_native_splash:
+#  image : assets/images/single icon White.png
+#  color : '#40BFFF'
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,6 +71,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/main_screen/
+    - assets/images/flash_sale/
+    - assets/images/flash_sale/More.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
