@@ -1,8 +1,8 @@
-import 'package:ecommerce_app_sat26/screens/account_screen.dart';
-import 'package:ecommerce_app_sat26/screens/cart_screen.dart';
-import 'package:ecommerce_app_sat26/screens/explore_screen.dart';
-import 'package:ecommerce_app_sat26/screens/main_screen.dart';
-import 'package:ecommerce_app_sat26/screens/offer_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/account_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/cart_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/explore_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/main_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/offer_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

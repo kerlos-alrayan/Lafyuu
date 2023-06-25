@@ -1,5 +1,5 @@
-import 'package:ecommerce_app_sat26/screens/home_screen.dart';
-import 'package:ecommerce_app_sat26/screens/register_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/home_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -89,10 +89,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           //   color: Colors.grey,
                           // ),
                           suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
+                            icon: isPasswordObscure
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: Colors.grey,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: Colors.blue,
+                                  ),
                             onPressed: () {
                               setState(
                                 () {
@@ -258,7 +263,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => RegisterScreen()));
                             },
                             child: Text(
                               'Register',

@@ -10,9 +10,9 @@ String categoryProductToJson(CategoryProduct data) => json.encode(data.toJson())
 
 class CategoryProduct {
   final int id;
-  final int price;
-  final int oldPrice;
-  final int discount;
+  final String price;
+  final String oldPrice;
+  final String discount;
   final String image;
   final String name;
   final String description;
@@ -35,9 +35,9 @@ class CategoryProduct {
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) => CategoryProduct(
     id: json["id"],
-    price: json["price"],
-    oldPrice: json["old_price"],
-    discount: json["discount"],
+    price: json["price"].toString(),
+    oldPrice: json["old_price"].toString(),
+    discount: json["discount"].toString(),
     image: json["image"],
     name: json["name"],
     description: json["description"],

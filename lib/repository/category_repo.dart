@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_app_sat26/model/category_repo_model.dart';
+import 'package:ecommerce_app_sat26/models/category_repo_model.dart';
 class CategoryRepository{
   Future<Response> getAllCategories() async{
     final response = await Dio().get('https://student.valuxapps.com/api/categories');
     return response;
   }
 }
+
 class CategoryDetails{
   Future<Response> getCategoriesDetails(int id) async{
     final response = await Dio().get('https://student.valuxapps.com/api/categories/$id');
@@ -27,6 +28,7 @@ class Home{
     return response;
   }
 }
+
  class HomeProducts{
   Future<Response> getHomeProducts(int id) async{
     final response = await Dio().get('https://student.valuxapps.com/api/home/$id');
@@ -37,8 +39,6 @@ class Home{
 void main(){
   print(Products().getProduct());
 }
-
-
 
 // class CategoryRepository {
 //   Future<List<CategoryRepoModel>> getAllCategories() async {

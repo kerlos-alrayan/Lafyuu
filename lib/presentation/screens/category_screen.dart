@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_app_sat26/model/product_category_model.dart';
+import 'package:ecommerce_app_sat26/models/product_category_model.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/single_product_screen.dart';
 import 'package:ecommerce_app_sat26/repository/category_repo.dart';
-import 'package:ecommerce_app_sat26/screens/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -71,7 +71,7 @@ class CategoryScreen extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProductScreen(
+                                  builder: (context) => SingleProductScreen(
                                     name: listOfProducts[index]['name'],
                                     imageURL: listOfProducts[index]['image'],
                                     description: listOfProducts[index]

@@ -1,6 +1,6 @@
-import 'package:ecommerce_app_sat26/components/input_text.dart';
-import 'package:ecommerce_app_sat26/screens/home_screen.dart';
-import 'package:ecommerce_app_sat26/screens/login_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/home_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/login_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 
 
