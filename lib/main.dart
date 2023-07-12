@@ -1,5 +1,7 @@
 import 'package:ecommerce_app_sat26/cubits/bottom_cubit/bottom_cubit.dart';
 import 'package:ecommerce_app_sat26/cubits/home_products_cubit/home_product_cubit.dart';
+import 'package:ecommerce_app_sat26/cubits/product_details_cubit/product_details_cubit.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/intro_screen.dart';
 import 'package:ecommerce_app_sat26/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,10 +29,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeProductCubit(),
         ),
+        BlocProvider(
+          create: (context) => ProductDetailsCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: IntroScreen(),
       ),
     );
   }

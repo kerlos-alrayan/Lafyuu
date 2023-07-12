@@ -96,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                   ],
                 ),
               ),
+
               // Line
               Container(
                 margin: EdgeInsets.only(top: 16, bottom: 16),
@@ -105,65 +106,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
 
               // CarouselSlider
-              BlocBuilder<HomeProductCubit, HomeProductState>(
-                builder: (BuildContext context, state) {
-                  if (state is LoadingHomeState) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is HomeDataSuccess) {
-                    final banners = state.homeResponse.data.banners;
-                    final products = state.homeResponse.data.products;
-                    return Container(
-                      child: CarouselSlider.builder(
-                          itemCount: banners.length,
-                          options: CarouselOptions(
-                            viewportFraction: 1,
-                            height: 206,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 5),
-                            enableInfiniteScroll: true,
-                          ),
-                          itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) {
-                            final bannerItem = banners[itemIndex];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => FlashSaleScreen(
-                                          image: bannerItem.image,
-                                        )));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 16, right: 16),
-                                child: Stack(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              bannerItem.image ??
-                                                  'https://student.valuxapps.com/storage/uploads/banners/1680055803aDUjo.36.PNG',
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    );
-                  }
-                  return SizedBox();
-                },
-              ),
+              _carousel_slider(),
 
               // Category & More Category
               TextAndMore(
@@ -171,86 +114,10 @@ class _MainScreenState extends State<MainScreen> {
                 more: 'More Category',
                 onTap: () {},
               ),
-              // Categories
-              FutureBuilder<Response>(
-                future: CategoryRepository().getAllCategories(),
-                builder: (context, snapshot) {
-                  final response = snapshot.data;
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data == null) {
-                      return Text('This is no data!');
-                    }
-                    if (response != null) {
-                      final listOfCategories = response.data['data']['data'];
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 140,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: listOfCategories.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => CategoryScreen(
-                                            title: listOfCategories[index]
-                                                ['name'],
-                                            imageURL: listOfCategories[index]
-                                                ['image'],
-                                            id: listOfCategories[index]['id'],
-                                          )));
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 12, left: 12),
-                                  child: Column(
-                                    children: [
-                                      // Image
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 16),
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              listOfCategories[index]['image']),
-                                          radius: 30,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      // Name
-                                      Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.19,
-                                        child: Text(
-                                          listOfCategories[index]['name'],
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.027,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.grey),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                      );
-                    }
-                  }
-                  return Container();
-                },
-              ),
+              // Categories
+              _categories(),
+
               // Flash Sale
               TextAndMore(
                 text: 'Flash Sale',
@@ -262,8 +129,10 @@ class _MainScreenState extends State<MainScreen> {
                           )));
                 },
               ),
+
               // Flash Sale Products
               _sale_products(),
+
               // Mega Sale
               Padding(
                 padding: const EdgeInsets.only(top: 24),
@@ -276,49 +145,13 @@ class _MainScreenState extends State<MainScreen> {
                   },
                 ),
               ),
+
               // Mega Sale Products
               _sale_products(),
+
               // Recomended Product
-              Container(
-                margin: EdgeInsets.only(top: 9, left: 16, right: 16),
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      'assets/images/main_screen/image 51.png',
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 48, left: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Recomended \n Product',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Text(
-                              'We recommend the best for you',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _recomended_product(),
+
               // GridView Builder
               SingleChildScrollView(
                 child: FutureBuilder<Response>(
@@ -364,12 +197,8 @@ class _MainScreenState extends State<MainScreen> {
                                             .push(MaterialPageRoute(
                                           builder: (context) =>
                                               SingleProductScreen(
-                                            name: products.name,
-                                            imageURL: products.image,
-                                            description: products.description,
-                                            id: products.id,
-                                            imagesURL: products.images,
-                                            price: products.price,
+                                            id: 1,
+                                            name: '',
                                           ),
                                         ));
                                       },
@@ -495,193 +324,308 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _sale_products() {
+  Widget _recomended_product() {
     return Container(
-      margin: EdgeInsets.only(top: 12, left: 16),
-      child: FutureBuilder<Response>(
-          future: Products().getProduct(),
-          builder: (context, snapshot) {
-            final productResponse = snapshot.data;
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
+      margin: EdgeInsets.only(top: 9, left: 16, right: 16),
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/images/main_screen/image 51.png',
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 48, left: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Recomended \n Product',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    'We recommend the best for you',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data == null) {
-                return Text('This is no data!');
-              }
-              if (productResponse != null) {
-                final listOfProducts = productResponse.data['data']['data'];
-                return Container(
-                  height: 238,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: listOfProducts.length,
-                      itemBuilder: (context, indexItem) {
-                        final flashProducts =
-                            CategoryProduct.fromJson(listOfProducts[indexItem]);
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SingleProductScreen(
-                                name: listOfProducts[indexItem]['name'],
-                                imageURL: listOfProducts[indexItem]['image'],
-                                description: listOfProducts[indexItem]
-                                    ['description'],
-                                id: listOfProducts[indexItem]['id'],
-                                imagesURL: listOfProducts[indexItem]['images'],
-                                price: listOfProducts[indexItem]['price'],
+  Widget _categories() {
+    return FutureBuilder<Response>(
+      future: CategoryRepository().getAllCategories(),
+      builder: (context, snapshot) {
+        final response = snapshot.data;
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == null) {
+            return Text('This is no data!');
+          }
+          if (response != null) {
+            final listOfCategories = response.data['data']['data'];
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: 140,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: listOfCategories.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final categoryItems = listOfCategories[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoryScreen(
+                                  title: listOfCategories[index]['name'],
+                                  imageURL: listOfCategories[index]['image'],
+                                  id: listOfCategories[index]['id'],
+                                )));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 12, left: 12),
+                        child: Column(
+                          children: [
+                            // Image
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(categoryItems['image']),
+                                radius: 30,
                               ),
-                            ));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 16),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            // Name
+                            Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width * 0.19,
+                              child: Text(
+                                categoryItems['name'],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.027,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            );
+          }
+        }
+        return Container();
+      },
+    );
+  }
+
+  Widget _carousel_slider() {
+    return BlocBuilder<HomeProductCubit, HomeProductState>(
+      builder: (BuildContext context, state) {
+        if (state is LoadingHomeState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is HomeDataSuccess) {
+          final banners = state.homeResponse.data.banners;
+          final products = state.homeResponse.data.products;
+          return Container(
+            child: CarouselSlider.builder(
+                itemCount: banners.length,
+                options: CarouselOptions(
+                  viewportFraction: 1,
+                  height: 206,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 5),
+                  enableInfiniteScroll: true,
+                ),
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) {
+                  final bannerItem = banners[itemIndex];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SingleProductScreen(
+                                id: bannerItem.id,
+                                name: '',
+                              )));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 16, right: 16),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
                             child: Container(
-                              width: 141,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  width: 1,
-                                  color: Color(0xffEBF0FF),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                        child: Image.network(
-                                      flashProducts.image,
-                                      width: 109,
-                                      height: 109,
-                                    )),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    // Title
-                                    Text(
-                                      flashProducts.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 12,
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xff223263),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    // Price
-                                    Text(
-                                      'EGP ${flashProducts.price}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 12,
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xff40BFFF),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'EGP ${flashProducts.oldPrice}',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 10,
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xff9098B1),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          '${flashProducts.discount}% off',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 10,
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xffFB7181),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    bannerItem.image ??
+                                        'https://student.valuxapps.com/storage/uploads/banners/1680055803aDUjo.36.PNG',
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                           ),
-                        );
-                      }),
-                );
-              }
-            }
-            return Container();
-          }),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+          );
+        }
+        return SizedBox();
+      },
+    );
+  }
+
+  Widget _sale_products() {
+    return BlocBuilder<HomeProductCubit, HomeProductState>(
+      builder: (context, state) {
+        if (state is LoadingHomeState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is HomeDataSuccess) {
+          final homeData = state.homeResponse.data.products;
+          return Container(
+            margin: EdgeInsets.only(top: 12, left: 16),
+            child: Container(
+              height: 238,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: homeData.length,
+                  itemBuilder: (context, indexItem) {
+                    final homeItems = homeData[indexItem];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SingleProductScreen(
+                                  id: 1,
+                                  name: homeItems.name,
+                                )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: Container(
+                          width: 141,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              width: 1,
+                              color: Color(0xffEBF0FF),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                    child: Image.network(
+                                  homeItems.image,
+                                  width: 109,
+                                  height: 109,
+                                )),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                // Title
+                                Text(
+                                  homeItems.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xff223263),
+                                  ),
+                                ),
+                                Spacer(),
+                                // Price
+                                Text(
+                                  'EGP ${homeItems.price}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xff40BFFF),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'EGP ${homeItems.oldPrice}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 10,
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xff9098B1),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    // Discount
+                                    Text(
+                                      '${homeItems.discount}% off',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 10,
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xffFB7181),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          );
+        }
+        return SizedBox();
+      },
     );
   }
 }
-// GestureDetector(
-//   onTap: () {
-//     Navigator.of(context).push(MaterialPageRoute(
-//         builder: (context) => FlashSaleScreen()));
-//   },
-//   child: Container(
-//     // margin: EdgeInsets.only(left: 16, right: 16),
-//     child: CarouselSlider.builder(
-//       itemCount: 5,
-//       options: CarouselOptions(
-//         height: 206,
-//         autoPlay: true,
-//         autoPlayInterval: Duration(seconds: 5),
-//         enableInfiniteScroll: true,
-//       ),
-//       itemBuilder: (BuildContext context, int itemIndex,
-//               int pageViewIndex) =>
-//           Container(
-//         margin: EdgeInsets.only(left: 16, right: 16),
-//         child: Stack(
-//           children: [
-//             Image.asset(
-//               'assets/images/Promotion Image.png',
-//               fit: BoxFit.cover,
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(24, 18, 50, 70),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     'Super Flash Sale',
-//                     style: TextStyle(
-//                       fontSize: 22,
-//                       fontFamily: 'Poppins',
-//                       fontWeight: FontWeight.w700,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                   Text(
-//                     '50% off',
-//                     style: TextStyle(
-//                       fontSize: 24,
-//                       fontFamily: 'Poppins',
-//                       fontWeight: FontWeight.w700,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//   ),
-// ),

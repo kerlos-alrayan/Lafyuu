@@ -128,14 +128,8 @@ class FlashSaleScreen extends StatelessWidget {
                                   onTap: () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => SingleProductScreen(
-                                        name: categoryProduct.name,
-                                        imageURL: categoryProduct.image,
-                                        description:
-                                            categoryProduct.description,
-                                        id: categoryProduct.id,
-                                        imagesURL: categoryProduct.images,
-                                        price: categoryProduct.price,
+                                      builder: (context) => SingleProductScreen(id: 1, name: '',
+                                        
                                       ),
                                     ));
                                   },

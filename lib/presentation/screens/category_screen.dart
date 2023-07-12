@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_app_sat26/models/product_category_model.dart';
 import 'package:ecommerce_app_sat26/presentation/screens/single_product_screen.dart';
 import 'package:ecommerce_app_sat26/repository/category_repo.dart';
 import 'package:flutter/material.dart';
@@ -71,14 +70,8 @@ class CategoryScreen extends StatelessWidget {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SingleProductScreen(
-                                    name: listOfProducts[index]['name'],
-                                    imageURL: listOfProducts[index]['image'],
-                                    description: listOfProducts[index]
-                                        ['description'],
-                                    id: listOfProducts[index]['id'],
-                                    imagesURL: listOfProducts[index]['images'],
-                                    price: listOfProducts[index]['price'],
+                                  builder: (context) => SingleProductScreen(id: 1, name: '',
+                                    
                                   ),
                                 ));
                               },
@@ -195,121 +188,3 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 }
-// child: FutureBuilder<Response>(
-//   future: CategoryDetails().getCategoriesDetails(id),
-//   builder: (BuildContext context, snapshot) {
-//     final response = snapshot.data!.data['data']['data'];
-//     if (snapshot.connectionState == ConnectionState.waiting) {
-//       return CircularProgressIndicator();
-//     }
-//     if (snapshot.connectionState == ConnectionState.done) {
-//       if (snapshot.data == null) {
-//         return Text('This is no data!');
-//       }
-//       if (response != null) {
-//         return GridView.builder(
-//             shrinkWrap: true,
-//             physics: NeverScrollableScrollPhysics(),
-//             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//               mainAxisExtent: 320, // height of container
-//               crossAxisCount: 2, // 3dd 2l container 2lly gnb b3d
-//               mainAxisSpacing: 12, // height between containers
-//               crossAxisSpacing: 13, // width between containers
-//             ),
-//             itemCount: response.length,
-//             itemBuilder: (context, index) => Container(
-//                   decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(5),
-//                     border: Border(
-//                       left: BorderSide(
-//                         width: 1,
-//                         color: Color(0xffEBF0FF),
-//                       ),
-//                       right: BorderSide(
-//                         width: 1,
-//                         color: Color(0xffEBF0FF),
-//                       ),
-//                       bottom: BorderSide(
-//                         width: 1,
-//                         color: Color(0xffEBF0FF),
-//                       ),
-//                       top: BorderSide(
-//                         width: 1,
-//                         color: Color(0xffEBF0FF),
-//                       ),
-//                     ),
-//                   ),
-//                   child: Padding(
-//                     padding: const EdgeInsets.all(16.0),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Center(
-//                             child: Image.network(
-//                           response[index]['image'],
-//                           width: 133,
-//                           height: 133,
-//                         )),
-//                         SizedBox(
-//                           height: 8,
-//                         ),
-//                         // Title
-//                         Text(
-//                           response[index]['name'],
-//                           overflow: TextOverflow.ellipsis,
-//                           style: TextStyle(
-//                             fontWeight: FontWeight.w500,
-//                             fontSize: 12,
-//                             fontFamily: 'Poppins',
-//                             color: Color(0xff223263),
-//                           ),
-//                         ),
-//                         Spacer(),
-//                         // Price
-//                         Text(
-//                           '\$${response[index]['price'].toString()}',
-//                           style: TextStyle(
-//                             fontWeight: FontWeight.w700,
-//                             fontSize: 12,
-//                             fontFamily: 'Poppins',
-//                             color: Color(0xff40BFFF),
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: 4,
-//                         ),
-//                         Row(
-//                           children: [
-//                             Text(
-//                               '\$${response[index]['old_price'].toString()}',
-//                               style: TextStyle(
-//                                 fontWeight: FontWeight.w700,
-//                                 fontSize: 10,
-//                                 fontFamily: 'Poppins',
-//                                 color: Color(0xff9098B1),
-//                               ),
-//                             ),
-//                             SizedBox(
-//                               width: 8,
-//                             ),
-//                             Text(
-//                               '\$${response[index]['discount'].toString()}% off',
-//                               style: TextStyle(
-//                                 fontWeight: FontWeight.w700,
-//                                 fontSize: 10,
-//                                 fontFamily: 'Poppins',
-//                                 color: Color(0xffFB7181),
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ));
-//       }
-//     }
-//
-//     return Container();
-//   },
-// ),
