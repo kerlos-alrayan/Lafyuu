@@ -1,8 +1,7 @@
 import 'package:ecommerce_app_sat26/cubits/bottom_cubit/bottom_cubit.dart';
 import 'package:ecommerce_app_sat26/cubits/home_products_cubit/home_product_cubit.dart';
 import 'package:ecommerce_app_sat26/cubits/product_details_cubit/product_details_cubit.dart';
-import 'package:ecommerce_app_sat26/presentation/screens/intro_screen.dart';
-import 'package:ecommerce_app_sat26/presentation/screens/login_screen.dart';
+import 'package:ecommerce_app_sat26/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: IntroScreen(),
+        home: SplashScreen(),
       ),
     );
   }

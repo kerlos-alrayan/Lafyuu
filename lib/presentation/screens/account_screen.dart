@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -7,7 +8,10 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: ElevatedButton(
+          onPressed: (){
+            FirebaseAuth.instance.signOut();
+          },
           child: Text('Account Screen'),
         ),
       ),

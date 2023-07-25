@@ -4,7 +4,6 @@ import 'package:ecommerce_app_sat26/presentation/screens/category_screen.dart';
 import 'package:ecommerce_app_sat26/presentation/screens/flash_sale_screen.dart';
 import 'package:ecommerce_app_sat26/presentation/screens/single_product_screen.dart';
 import 'package:ecommerce_app_sat26/presentation/widgets/text_more.dart';
-import 'package:ecommerce_app_sat26/models/product_category_model.dart';
 import 'package:ecommerce_app_sat26/repository/category_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -106,7 +105,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
 
               // CarouselSlider
-              _carousel_slider(),
+              _banners(),
 
               // Category & More Category
               TextAndMore(
@@ -153,175 +152,146 @@ class _MainScreenState extends State<MainScreen> {
               _recomended_product(),
 
               // GridView Builder
-              SingleChildScrollView(
-                child: FutureBuilder<Response>(
-                    future: Products().getProduct(),
-                    builder: (context, snapshot) {
-                      final productResponse = snapshot.data;
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data == null) {
-                          return Text('This is no data!');
-                        }
-                        if (productResponse != null) {
-                          final listOfProducts =
-                              productResponse.data['data']['data'];
-
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Container(
-                              child: GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisExtent: 282, // height of container
-                                    crossAxisCount:
-                                        2, // 3dd 2l container 2lly gnb b3d
-                                    mainAxisSpacing:
-                                        12, // height between containers
-                                    crossAxisSpacing:
-                                        13, // width between containers
-                                  ),
-                                  itemCount: listOfProducts.length,
-                                  itemBuilder: (context, index) {
-                                    final products = CategoryProduct.fromJson(
-                                        listOfProducts[index]);
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              SingleProductScreen(
-                                            id: 1,
-                                            name: '',
-                                          ),
-                                        ));
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            width: 1,
-                                            color: Color(0xffEBF0FF),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              // Image
-                                              Center(
-                                                  child: Image.network(
-                                                products.image,
-                                                width: 133,
-                                                height: 133,
-                                              )),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              // Title
-                                              Text(
-                                                products.name,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  color: Color(0xff223263),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              // Rating
-                                              RatingBar.builder(
-                                                itemSize: 10,
-                                                ignoreGestures: true,
-                                                initialRating: 4,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemPadding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 4.0),
-                                                itemBuilder: (context, _) =>
-                                                    Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  print(rating);
-                                                },
-                                              ),
-                                              Spacer(),
-                                              // Price
-                                              Text(
-                                                'EGP ${products.price}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  color: Color(0xff40BFFF),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 4,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'EGP ${products.oldPrice}',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 10,
-                                                      fontFamily: 'Poppins',
-                                                      color: Color(0xff9098B1),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Text(
-                                                    '${products.discount}% off',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 10,
-                                                      fontFamily: 'Poppins',
-                                                      color: Color(0xffFB7181),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          );
-                        }
-                      }
-                      return Container();
-                    }),
-              ),
+              _gridView_products(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _gridView_products() {
+    return BlocBuilder<HomeProductCubit, HomeProductState>(
+        builder: (context, state) {
+      if (state is LoadingHomeState) {
+        return CircularProgressIndicator();
+      }
+      if (state is HomeDataSuccess) {
+        final homeData = state.homeResponse.data.products;
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            child: GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 282, // height of container
+                  crossAxisCount: 2, // 3dd 2l container 2lly gnb b3d
+                  mainAxisSpacing: 12, // height between containers
+                  crossAxisSpacing: 13, // width between containers
+                ),
+                itemCount: homeData.length,
+                itemBuilder: (context, index) {
+                  final homeItems = homeData[index];
+                  return GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xffEBF0FF),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+// Image
+                            Center(
+                                child: Image.network(
+                              homeItems.image,
+                              width: 133,
+                              height: 133,
+                            )),
+                            SizedBox(
+                              height: 8,
+                            ),
+// Title
+                            Text(
+                              homeItems.name,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                fontFamily: 'Poppins',
+                                color: Color(0xff223263),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+// Rating
+                            RatingBar.builder(
+                              itemSize: 10,
+                              ignoreGestures: true,
+                              initialRating: 4,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {
+                                print(rating);
+                              },
+                            ),
+                            Spacer(),
+// Price
+                            Text(
+                              'EGP ${homeItems.price}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                fontFamily: 'Poppins',
+                                color: Color(0xff40BFFF),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'EGP ${homeItems.oldPrice}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xff9098B1),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  '${homeItems.discount}% off',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xffFB7181),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        );
+      }
+      return SizedBox();
+    });
   }
 
   Widget _recomended_product() {
@@ -445,7 +415,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _carousel_slider() {
+  Widget _banners() {
     return BlocBuilder<HomeProductCubit, HomeProductState>(
       builder: (BuildContext context, state) {
         if (state is LoadingHomeState) {
@@ -455,7 +425,7 @@ class _MainScreenState extends State<MainScreen> {
         }
         if (state is HomeDataSuccess) {
           final banners = state.homeResponse.data.banners;
-          final products = state.homeResponse.data.products;
+          // final products = state.homeResponse.data.products;
           return Container(
             child: CarouselSlider.builder(
                 itemCount: banners.length,
@@ -486,10 +456,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(
-                                    bannerItem.image ??
-                                        'https://student.valuxapps.com/storage/uploads/banners/1680055803aDUjo.36.PNG',
-                                  ),
+                                  image: NetworkImage(bannerItem.image),
                                   fit: BoxFit.cover,
                                 ),
                               ),
